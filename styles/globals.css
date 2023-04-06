@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background: linear-gradient(180deg, rgba(163,230,53,1) 0%, rgba(114,161,37,1) 27%, rgba(0,0,0,1) 100%);
+}
+
+@font-face {
+    font-family: SegaSonic;
+    src: url(../public/fonts/SegaSonic.TTF);
+}
