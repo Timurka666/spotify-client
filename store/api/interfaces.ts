@@ -26,3 +26,10 @@ export interface ILogRes {
 },
 token: string
 }
+
+export interface IGetMe {
+  id: number,
+  nickName: string,
+  email: string,
+  favourites: unknown[]
+}
