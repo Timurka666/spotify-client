@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "..";
-import { IRegReq, IRegRes } from "./interfaces";
+import { ILogReq, ILogRes, IRegReq, IRegRes } from "./interfaces";
 
 export const musicApi = createApi({
     reducerPath: 'music/api',
@@ -23,9 +23,19 @@ export const musicApi = createApi({
                     url: '/user/register',
                     body: req
                 })
+            }),
+            loginUser: build.mutation<ILogRes, ILogReq>({
+                query: (req) => ({
+                    method: 'POST',
+                    url: '/user/login',
+                    body: req
+                })
             })
         }
     }
 });
 
-export const {useRegisterUserMutation} = musicApi;
+export const {
+    useRegisterUserMutation,
+    useLoginUserMutation
+} = musicApi;

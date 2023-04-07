@@ -12,3 +12,17 @@ export interface IRegRes {
     }
     token: string
   }
+
+  export interface ILogReq {
+    email: string,
+    password: string
+}
+export interface ILogRes {
+  user: {
+    id: number,
+    nickName: string,
+    email: string,
+    favourites: unknown[]
+},
+token: string
+}

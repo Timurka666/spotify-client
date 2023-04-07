@@ -52,7 +52,7 @@ export default function NavBar() {
                     transition-all
                     ">Sign up</Link></li>
                     <li><Link
-                    href="/registration"
+                    href="/login"
                     className="
                     block
                     text-lime-400

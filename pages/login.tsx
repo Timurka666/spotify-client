@@ -1,12 +1,12 @@
 import Layout from "@/components/layout";
-import RegForm from "@/components/regForm";
+import LoginForm from "@/components/loginForm";
 
-export default function Registration() {
+export default function Login() {
     return (
-        <Layout title="Sign up">
+        <Layout title="Sign in">
             <div className="
             mt-[7rem]">
-            <RegForm />
+            <LoginForm />
             </div>
         </Layout>
     )
