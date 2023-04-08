@@ -24,6 +24,7 @@ export default function Layout(props: props) {
                 <main className="
                 mt-[3.5rem]
                 py-[1rem]
+                px-[0.5rem]
                 bg-neutral-900
                 container
                 mx-auto

@@ -42,7 +42,7 @@ export default function LoginForm() {
             <h1 className="
             text-xl
             font-bold
-            text-neutral-600">Sign in</h1>
+            text-neutral-500">Sign in</h1>
             <input
             value={email}
             onChange={(e) => {setEmail(e.target.value)}}

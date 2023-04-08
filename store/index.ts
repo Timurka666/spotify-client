@@ -32,16 +32,17 @@ export const makeStore = () => {
             storage,
         };
         const persistedReducer = persistReducer(persistConfig, rootReducer);
-        let store: any = configureStore({
+        let store = configureStore({
         reducer: persistedReducer,
         devTools: process.env.NODE_ENV !== "production",
 
         middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(musicApi.middleware)
         });
-        store.__persistor = persistStore(store);
+
         return store;
     }
 };
+export const persistor = persistStore(makeStore());
 
 export type AppStore = ReturnType<typeof makeStore>;
 export type AppState = ReturnType<AppStore["getState"]>;

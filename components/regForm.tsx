@@ -43,7 +43,7 @@ export default function RegisterForm() {
             <h1 className="
             text-xl
             font-bold
-            text-neutral-600">Sign up</h1>
+            text-neutral-500">Sign up</h1>
             <input
             value={nickName}
             onChange={(e) => {setNickName(e.target.value)}}
