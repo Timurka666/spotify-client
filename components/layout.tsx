@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-document-import-in-page */
 import Head from "next/head";
 import { HTMLAttributes } from "react";
+import ModalWindow from "./modalWindows";
 import NavBar from "./navbar";
 
 export interface props {
@@ -20,6 +21,7 @@ export default function Layout(props: props) {
                 <meta name="keywords" content="music,spotify,free" />
                 <title>{props.title}</title>
             </Head>
+                <ModalWindow />
                 <NavBar />
                 <main className="
                 mt-[3.5rem]

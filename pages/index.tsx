@@ -1,13 +1,16 @@
 import Layout from "@/components/layout";
+import { useActions } from "@/store";
+import { WindowType } from "@/store/modalWindow.slice";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Home() {
+    const {callWindow} = useActions();
     const [count, setCount] = useState(0);
 
     useEffect(() => {
         if (count > 10) {
-            alert(process.env.baseUrl)
+            callWindow({message: 'stop clicking!!!', type: WindowType.WARN})
         }
     }, [count])
 

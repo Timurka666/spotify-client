@@ -3,6 +3,7 @@ import '@/styles/globals.css'
 import {Provider} from 'react-redux';
 import { persistor, wrapper } from '@/store';
 import { PersistGate } from 'redux-persist/integration/react';
+import persistStore from 'redux-persist/lib/persistStore';
 
 export default function MyApp({ Component, ...rest }: AppProps) {
   const {store, props} = wrapper.useWrappedStore(rest);
@@ -10,7 +11,7 @@ export default function MyApp({ Component, ...rest }: AppProps) {
 
   return (
     <Provider store={store}>
-      <PersistGate persistor={persistor}>
+      <PersistGate persistor={persistStore(store)}>
       <Component {...pageProps} />
       </PersistGate>
     </Provider>

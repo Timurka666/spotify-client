@@ -1,17 +1,18 @@
 import { Action, bindActionCreators, combineReducers, configureStore, ThunkAction } from "@reduxjs/toolkit";
-import { setupListeners } from "@reduxjs/toolkit/dist/query";
 import { createWrapper } from "next-redux-wrapper";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { musicApi } from "./api";
 import { JwtSlice } from "./jwt.slice";
+import { WindowSlice } from "./modalWindow.slice";
 import { UserSlice } from "./user.slice";
 
 const rootReducer = combineReducers({
     [musicApi.reducerPath]: musicApi.reducer,
     [UserSlice.name]: UserSlice.reducer,
-    [JwtSlice.name]: JwtSlice.reducer
+    [JwtSlice.name]: JwtSlice.reducer,
+    [WindowSlice.name]: WindowSlice.reducer
 })
 
 const makeConfiguredStore = () =>
@@ -28,7 +29,7 @@ export const makeStore = () => {
     } else {
         const persistConfig = {
             key: "nextjs",
-            whitelist: ["user", "jwt"],
+            whitelist: ["user"],
             storage,
         };
         const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -55,7 +56,8 @@ export type AppThunk<ReturnType = void> = ThunkAction<
 
 export const actions = {
     ...UserSlice.actions,
-    ...JwtSlice.actions
+    ...JwtSlice.actions,
+    ...WindowSlice.actions
 }
 
 export const useActions = () => {
