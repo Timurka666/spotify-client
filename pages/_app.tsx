@@ -1,4 +1,5 @@
 import type { AppProps } from 'next/app'
+import NextNProgress from 'nextjs-progressbar'
 import '@/styles/globals.css'
 import {Provider} from 'react-redux';
 import { persistor, wrapper } from '@/store';
@@ -12,7 +13,10 @@ export default function MyApp({ Component, ...rest }: AppProps) {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistStore(store)}>
-      <Component {...pageProps} />
+        <>
+          <NextNProgress color='#84cc16' options={{showSpinner: false}}  />
+          <Component {...pageProps} />
+        </>
       </PersistGate>
     </Provider>
   )

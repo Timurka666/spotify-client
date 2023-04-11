@@ -33,3 +33,10 @@ export interface IGetMe {
   email: string,
   favourites: unknown[]
 }
+
+export interface IUploadAlbumRes {
+  id: number,
+  name: string,
+  author: string,
+  cover: string
+}

@@ -20,12 +20,12 @@ export default function NavBar() {
         <nav className="
         flex
         flex-col
-        justify-middle
+        justify-around
         fixed
         top-[0px]
         left-[0px]
         w-[100vw]
-        h-[3.5rem]
+        h-[4.2rem]
         bg-neutral-800">
             <div className="
             h-auto

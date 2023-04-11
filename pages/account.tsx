@@ -5,6 +5,7 @@ import { IGetMe } from "@/store/api/interfaces";
 import { UserSlice } from "@/store/user.slice";
 import { getCookie } from "cookies-next";
 import { InferGetServerSidePropsType, GetServerSideProps } from "next";
+import Link from "next/link";
 
 export default function Account(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const {id, nickName, email} = useTypedSelector((state) => state.user);
@@ -40,6 +41,27 @@ export default function Account(props: InferGetServerSidePropsType<typeof getSer
                 text-5xl
                 font-bold
                 text-neutral-500">My albums</div>
+                <Link href="/album/create"><button
+                className="
+                block
+                text-lime-400
+                text-xl
+                font-bold
+                align-middle
+                text-center
+                w-auto
+                px-[0.5rem]
+                py-[0.2rem]
+                border-lime-400
+                border-[2px]
+                rounded-[10px]
+                hover:border-neutral-800
+                hover:bg-lime-400
+                hover:text-neutral-800
+                transition-all
+                ">
+                    Add new album
+                </button></Link>
             </div>
         </Layout>
     )

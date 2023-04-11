@@ -24,13 +24,13 @@ export default function Layout(props: props) {
                 <ModalWindow />
                 <NavBar />
                 <main className="
-                mt-[3.5rem]
+                mt-[4.2rem]
                 py-[1rem]
                 px-[0.5rem]
                 bg-neutral-900
                 container
                 mx-auto
-                min-h-[calc(100vh-3.5rem)]
+                min-h-[calc(100vh-4.2rem)]
                 ">
                     {props.children}
                 </main>
