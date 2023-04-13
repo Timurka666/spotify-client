@@ -31,7 +31,8 @@ export interface IGetMe {
   id: number,
   nickName: string,
   email: string,
-  favourites: unknown[]
+  favourites: unknown[],
+  albums: IAlbum[]
 }
 
 export interface IUploadAlbumRes {
@@ -39,4 +40,13 @@ export interface IUploadAlbumRes {
   name: string,
   author: string,
   cover: string
+}
+
+export interface IAlbum {
+  id: number,
+  name: string,
+  author: string,
+  coverPath: string,
+  tracks: unknown[],
+
 }

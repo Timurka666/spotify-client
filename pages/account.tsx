@@ -5,6 +5,7 @@ import { IGetMe } from "@/store/api/interfaces";
 import { UserSlice } from "@/store/user.slice";
 import { getCookie } from "cookies-next";
 import { InferGetServerSidePropsType, GetServerSideProps } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Account(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
@@ -41,6 +42,11 @@ export default function Account(props: InferGetServerSidePropsType<typeof getSer
                 text-5xl
                 font-bold
                 text-neutral-500">My albums</div>
+                <div>
+                    {props.user.data?.albums?.map((el, i) => (
+                        <img src={`${process.env.baseUrl}/${el.coverPath}`} alt="" key={i} />
+                    ))}
+                </div>
                 <Link href="/album/create"><button
                 className="
                 block
