@@ -5,6 +5,7 @@ import { useUploadAlbumMutation } from "@/store/api";
 import { WindowType } from "@/store/modalWindow.slice";
 import { useEffect, useState } from "react";
 import {redirect, useRouter} from 'next/navigation';
+import AlbumForm from "@/components/creation/albumForm";
 
 export default function CreateAlbum() {
     const {push} = useRouter();
@@ -39,82 +40,15 @@ export default function CreateAlbum() {
             flex
             flex-col
             gap-[2rem]
-            w-[50rem]
+            w-[100%]
             ">
-                <input
-                type="text"
-                name="name"
-                value={name}
-                placeholder="Album name"
-                className="
-                block
-                bg-white/0
-                h-[2.3rem]
-                border-solid
-                border-[2px]
-                rounded-[5px]
-                border-neutral-600
-                text-neutral-300
-                px-[0.5rem]
-                "
-                onChange={(e) => {setName(e.target.value)}}
-                 />
-                
-                <input
-                type="text"
-                name="author"
-                value={author}
-                placeholder="Album author"
-                className="
-                block
-                bg-white/0
-                h-[2.3rem]
-                border-solid
-                border-[2px]
-                rounded-[5px]
-                border-neutral-600
-                text-neutral-300
-                px-[0.5rem]
-                "
-                onChange={(e) => {setAuthor(e.target.value)}}
-                 />
-
-                <div
-                className="
-                flex
-                justify-start
-                w-[30rem]
-                bg-white/0
-                h-[2.3rem]
-                border-solid
-                border-[2px]
-                rounded-[10px]
-                border-neutral-600
-                gap-[2rem]
-                "
-                >
-                <input
-                id="input-cover"
-                type="file"
-                name="cover"
-                accept="image/*"
-                className="hidden"
-                onChange={(e) => {setFile(e.target.files[0])}}
-                 />
-                <label
-                className="
-                "
-                htmlFor="input-cover"
-                ><SelectFileButton /></label>
-                <div
-                className="
-                text-neutral-300
-                text-2xl
-                ">
-                    {file?.name || 'no file selected'}
-                </div>
-                </div>
-
+                <AlbumForm
+                name={name}
+                author={author}
+                file={file}
+                setFile={setFile}
+                setAuthor={setAuthor}
+                setName={setName} />
                 <button
                 className="
                 block

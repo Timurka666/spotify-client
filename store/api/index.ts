@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getCookie } from "cookies-next";
 import { HYDRATE } from "next-redux-wrapper";
 import { AppState, AppStore } from "..";
-import { IGetMe, ILogReq, ILogRes, IRegReq, IRegRes, IUploadAlbumRes } from "./interfaces";
+import { IAlbumRes, IAlbum, IGetMe, ILogReq, ILogRes, IRegReq, IRegRes, IUploadAlbumRes } from "./interfaces";
 
 export const musicApi = createApi({
     reducerPath: 'music/api',
@@ -55,6 +55,11 @@ export const musicApi = createApi({
                         Authorization: getCookie('jwt') as string
                     },
                     body
+                })
+            }),
+            getAlbum: build.query<IAlbumRes, number>({
+                query: (id) => ({
+                    url: `/album/${id}`
                 })
             })
         }

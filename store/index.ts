@@ -7,12 +7,14 @@ import { musicApi } from "./api";
 import { JwtSlice } from "./jwt.slice";
 import { WindowSlice } from "./modalWindow.slice";
 import { UserSlice } from "./user.slice";
+import { MyAlbumsSlice } from "./album.slice";
 
 const rootReducer = combineReducers({
     [musicApi.reducerPath]: musicApi.reducer,
     [UserSlice.name]: UserSlice.reducer,
     [JwtSlice.name]: JwtSlice.reducer,
-    [WindowSlice.name]: WindowSlice.reducer
+    [WindowSlice.name]: WindowSlice.reducer,
+    [MyAlbumsSlice.name]: MyAlbumsSlice.reducer
 })
 
 const makeConfiguredStore = () =>
@@ -29,7 +31,7 @@ export const makeStore = () => {
     } else {
         const persistConfig = {
             key: "nextjs",
-            whitelist: ["user"],
+            whitelist: ["user", "myAlbums"],
             storage,
         };
         const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -57,7 +59,8 @@ export type AppThunk<ReturnType = void> = ThunkAction<
 export const actions = {
     ...UserSlice.actions,
     ...JwtSlice.actions,
-    ...WindowSlice.actions
+    ...WindowSlice.actions,
+    ...MyAlbumsSlice.actions
 }
 
 export const useActions = () => {

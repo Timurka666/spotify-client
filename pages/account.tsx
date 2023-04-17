@@ -1,11 +1,12 @@
+/* eslint-disable @next/next/no-img-element */
+import AlbumComponent from "@/components/account/album";
 import Layout from "@/components/layout";
 import { makeStore, useTypedSelector, wrapper } from "@/store";
+import { MyAlbumsSlice } from "@/store/album.slice";
 import { musicApi } from "@/store/api";
-import { IGetMe } from "@/store/api/interfaces";
 import { UserSlice } from "@/store/user.slice";
 import { getCookie } from "cookies-next";
-import { InferGetServerSidePropsType, GetServerSideProps } from "next";
-import Image from "next/image";
+import { InferGetServerSidePropsType } from "next";
 import Link from "next/link";
 
 export default function Account(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
@@ -16,7 +17,7 @@ export default function Account(props: InferGetServerSidePropsType<typeof getSer
             <div className="
             w-[60%]
             px-[1rem]
-            py-[0.2rem]
+            py-[0.5rem]
             border-solid
             border-[2px]
             rounded-[10px]
@@ -31,43 +32,60 @@ export default function Account(props: InferGetServerSidePropsType<typeof getSer
             </div>
             <div className="
             mt-[1rem]
-            w-[60%]
+            w-[50%]
             px-[1rem]
-            py-[0.2rem]
+            py-[0.5rem]
             border-solid
             border-[2px]
             rounded-[10px]
             border-lime-400">
                 <div className="
-                text-5xl
-                font-bold
-                text-neutral-500">My albums</div>
-                <div>
+                flex
+                justify-between
+                ">
+                    <div className="
+                    text-5xl
+                    font-bold
+                    text-neutral-500">My albums</div>
+                    <Link href="/album/create"><button
+                    className="
+                    mt-[1rem]
+                    block
+                    text-lime-400
+                    text-xl
+                    font-bold
+                    align-middle
+                    text-center
+                    w-auto
+                    px-[0.5rem]
+                    py-[0.2rem]
+                    border-lime-400
+                    border-[2px]
+                    rounded-[10px]
+                    hover:border-neutral-800
+                    hover:bg-lime-400
+                    hover:text-neutral-800
+                    transition-all
+                    ">
+                        Add new album
+                    </button></Link>
+                </div>
+                <div className="
+                mt-[1rem]
+                flex
+                flex-col
+                gap-[1rem]
+                ">
                     {props.user.data?.albums?.map((el, i) => (
-                        <img src={`${process.env.baseUrl}/${el.coverPath}`} alt="" key={i} />
+                        <AlbumComponent
+                        albumId={el.id}
+                        imagePath={el.coverPath}
+                        albumName={el.name}
+                        albumAuthor={el.author}
+                        key={i}
+                        />
                     ))}
                 </div>
-                <Link href="/album/create"><button
-                className="
-                block
-                text-lime-400
-                text-xl
-                font-bold
-                align-middle
-                text-center
-                w-auto
-                px-[0.5rem]
-                py-[0.2rem]
-                border-lime-400
-                border-[2px]
-                rounded-[10px]
-                hover:border-neutral-800
-                hover:bg-lime-400
-                hover:text-neutral-800
-                transition-all
-                ">
-                    Add new album
-                </button></Link>
             </div>
         </Layout>
     )
@@ -86,7 +104,11 @@ export const getServerSideProps = wrapper.getServerSideProps(
         const jwt = getCookie('jwt', {req: context.req, res: context.res}) as string;
         const user = await store.dispatch(musicApi.endpoints.getMe.initiate(jwt));
         await Promise.all(store.dispatch(musicApi.util.getRunningQueriesThunk()));
-        store.dispatch(UserSlice.actions.pushUser({id: user.data?.id, nickName: user.data?.nickName, email: user.data?.email}))
+        store.dispatch(UserSlice.actions.pushUser({id: user.data?.id, nickName: user.data?.nickName, email: user.data?.email}));
+        user.data?.albums.forEach((el) => {
+            store.dispatch(MyAlbumsSlice.actions.pushAlbum(el));
+        })
+            
         
 
 
