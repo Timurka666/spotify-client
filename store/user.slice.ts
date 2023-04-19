@@ -23,12 +23,12 @@ export const UserSlice = createSlice({
             state.nickName = action.payload.nickName;
         }
     },
-    extraReducers: {
+    /*extraReducers: {
         [HYDRATE]: (state, action) => {
             return {
                 ...state,
                 ...action.payload.user
             }
         }
-    },
+    }*/
 });

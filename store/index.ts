@@ -1,13 +1,15 @@
 import { Action, bindActionCreators, combineReducers, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { persistReducer, persistStore } from "redux-persist";
+import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { musicApi } from "./api";
 import { JwtSlice } from "./jwt.slice";
 import { WindowSlice } from "./modalWindow.slice";
 import { UserSlice } from "./user.slice";
 import { MyAlbumsSlice } from "./album.slice";
+
+
 
 const rootReducer = combineReducers({
     [musicApi.reducerPath]: musicApi.reducer,
@@ -21,7 +23,7 @@ const makeConfiguredStore = () =>
   configureStore({
     reducer: rootReducer,
     devTools: true,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(musicApi.middleware)
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}).concat(musicApi.middleware)
   });
 
 export const makeStore = () => {
@@ -30,8 +32,9 @@ export const makeStore = () => {
     return makeConfiguredStore(); 
     } else {
         const persistConfig = {
-            key: "nextjs",
+            key: "musicPaltform",
             whitelist: ["user", "myAlbums"],
+            blacklist: [musicApi.reducerPath],
             storage,
         };
         const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -39,13 +42,15 @@ export const makeStore = () => {
         reducer: persistedReducer,
         devTools: process.env.NODE_ENV !== "production",
 
-        middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(musicApi.middleware)
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: {
+          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        },}).concat(musicApi.middleware)
         });
-
+        
         return store;
     }
 };
-export const persistor = persistStore(makeStore());
+//export const persistor = persistStore(makeStore());
 
 export type AppStore = ReturnType<typeof makeStore>;
 export type AppState = ReturnType<AppStore["getState"]>;

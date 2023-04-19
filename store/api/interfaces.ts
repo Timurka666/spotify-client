@@ -47,10 +47,20 @@ export interface IAlbum {
   name: string,
   author: string,
   coverPath: string,
-  tracks?: unknown[],
+  tracks: ITrack[],
 
 }
 
 export interface IAlbumRes extends IAlbum {
   publisher: string
+}
+
+export interface ITrack {
+  id: number,
+  name: string,
+  filePath: string,
+  author: string,
+  coverPath: string,
+  likes: number,
+  comments: unknown[]
 }

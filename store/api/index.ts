@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getCookie } from "cookies-next";
 import { HYDRATE } from "next-redux-wrapper";
 import { AppState, AppStore } from "..";
-import { IAlbumRes, IAlbum, IGetMe, ILogReq, ILogRes, IRegReq, IRegRes, IUploadAlbumRes } from "./interfaces";
+import { IAlbumRes, IAlbum, IGetMe, ILogReq, ILogRes, IRegReq, IRegRes, IUploadAlbumRes, ITrack } from "./interfaces";
 
 export const musicApi = createApi({
     reducerPath: 'music/api',
@@ -61,6 +61,17 @@ export const musicApi = createApi({
                 query: (id) => ({
                     url: `/album/${id}`
                 })
+            }),
+            addNewTrack: build.mutation<ITrack, FormData>({
+                query: (body) => ({
+                    method: 'POST',
+                    url: '/track/createNewAudio',
+                    headers: {
+                        ContentType: 'multipart/form-data',
+                        Authorization: getCookie('jwt') as string
+                    },
+                    body
+                })
             })
         }
     }
@@ -69,5 +80,6 @@ export const musicApi = createApi({
 export const {
     useRegisterUserMutation,
     useLoginUserMutation,
-    useUploadAlbumMutation
+    useUploadAlbumMutation,
+    useAddNewTrackMutation
 } = musicApi;

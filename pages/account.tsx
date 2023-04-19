@@ -6,6 +6,7 @@ import { MyAlbumsSlice } from "@/store/album.slice";
 import { musicApi } from "@/store/api";
 import { UserSlice } from "@/store/user.slice";
 import { getCookie } from "cookies-next";
+import { cloneDeep } from "lodash";
 import { InferGetServerSidePropsType } from "next";
 import Link from "next/link";
 
@@ -106,11 +107,11 @@ export const getServerSideProps = wrapper.getServerSideProps(
         await Promise.all(store.dispatch(musicApi.util.getRunningQueriesThunk()));
         store.dispatch(UserSlice.actions.pushUser({id: user.data?.id, nickName: user.data?.nickName, email: user.data?.email}));
         user.data?.albums.forEach((el) => {
-            store.dispatch(MyAlbumsSlice.actions.pushAlbum(el));
+            store.dispatch(MyAlbumsSlice.actions.pushAlbum(cloneDeep(el)));
+            el.tracks?.forEach((e) => {
+                store.dispatch(MyAlbumsSlice.actions.pushTrack({track: cloneDeep(e), albumId: el.id}));
+            })
         })
-            
-        
-
 
         return {
             props: {user}

@@ -1,13 +1,19 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
-import {IAlbum} from "./api/interfaces"
+import {IAlbum, ITrack} from "./api/interfaces"
+import {cloneDeep} from 'lodash';
 
+interface Tracks extends ITrack {
+    albumId: number
+}
 export interface state {
-    myAlbums: IAlbum[]
+    myAlbums: IAlbum[],
+    tracks: Tracks[]
 }
 
 const initialState: state = {
-    myAlbums: []
+    myAlbums: [],
+    tracks: []
 }
 
 export const MyAlbumsSlice = createSlice({
@@ -15,15 +21,20 @@ export const MyAlbumsSlice = createSlice({
     initialState,
     reducers: {
         pushAlbum: (state, action: PayloadAction<IAlbum>) => {
-            state.myAlbums.push({...action.payload})
+            state.myAlbums.push(cloneDeep(action.payload))
+        },
+        pushTrack: (state, action: PayloadAction<{track: ITrack, albumId: number}>) => {
+            const {track, albumId} = action.payload;
+            const newTrack = cloneDeep({...track, albumId});
+            state.tracks.push(cloneDeep(newTrack));
         }
     },
-    extraReducers: {
+    /*extraReducers: {
         [HYDRATE]: (state, action) => {
             return {
                 ...state,
                 ...action.payload.myAlbums
             }
         }
-    },
+    }*/
 });
