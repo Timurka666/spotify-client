@@ -35,7 +35,8 @@ export default function CreateAlbum() {
 
 
     return (
-        <Layout title="New album">
+        <>
+        <Layout title="New album" />
             <div className="
             flex
             flex-col
@@ -70,6 +71,6 @@ export default function CreateAlbum() {
                 "
                 onClick={() => {submitHandler()}}>Create new album</button>
             </div>
-        </Layout>
+        </>
     )
 }

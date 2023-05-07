@@ -8,6 +8,7 @@ import { JwtSlice } from "./jwt.slice";
 import { WindowSlice } from "./modalWindow.slice";
 import { UserSlice } from "./user.slice";
 import { MyAlbumsSlice } from "./album.slice";
+import { PlayerSlice } from "./player.slice";
 
 
 
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
     [UserSlice.name]: UserSlice.reducer,
     [JwtSlice.name]: JwtSlice.reducer,
     [WindowSlice.name]: WindowSlice.reducer,
-    [MyAlbumsSlice.name]: MyAlbumsSlice.reducer
+    [MyAlbumsSlice.name]: MyAlbumsSlice.reducer,
+    [PlayerSlice.name]: PlayerSlice.reducer
 })
 
 const makeConfiguredStore = () =>
@@ -65,7 +67,8 @@ export const actions = {
     ...UserSlice.actions,
     ...JwtSlice.actions,
     ...WindowSlice.actions,
-    ...MyAlbumsSlice.actions
+    ...MyAlbumsSlice.actions,
+    ...PlayerSlice.actions
 }
 
 export const useActions = () => {

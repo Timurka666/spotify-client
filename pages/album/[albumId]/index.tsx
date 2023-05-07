@@ -1,4 +1,5 @@
 import AlbumComponent from "@/components/albumPage/album";
+import TrackComponent from "@/components/albumPage/track";
 import Layout from "@/components/layout";
 import { wrapper } from "@/store";
 import { musicApi } from "@/store/api";
@@ -7,7 +8,8 @@ import { InferGetServerSidePropsType } from "next/types";
 
 export default function Album(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
     return (
-        <Layout title={`Album | ${props.album.data?.name}`}>
+        <>
+        <Layout title={`Album | ${props.album.data?.name}`} />
             <div className="
             after:content-['']
             after:block
@@ -23,7 +25,19 @@ export default function Album(props: InferGetServerSidePropsType<typeof getServe
                 cover={props.album.data?.coverPath}
                 author={props.album.data?.author} />
             </div>
-        </Layout>
+            <div>
+                {props.album.data?.tracks?.map((el, i) => (
+                    <TrackComponent
+                    key={i}
+                    id={el.id}
+                    name={el.name}
+                    coverPath={el.coverPath}
+                    filePath={el.filePath}
+                    likes={el.likes}
+                    />
+                ))}
+            </div>
+        </>
     )
 }
 

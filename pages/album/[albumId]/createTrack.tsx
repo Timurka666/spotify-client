@@ -34,7 +34,8 @@ export default function CreateTrack() {
     }, [isSuccess]);
 
     return (
-        <Layout title="create new track">
+        <>
+        <Layout title="create new track" />
            <TrackForm
            cover={cover}
            setCover={setCover}
@@ -64,6 +65,6 @@ export default function CreateTrack() {
            "
            onClick={(e) => {submitHandler()}}
            >create new track</button>
-        </Layout>
+        </>
     )
 }

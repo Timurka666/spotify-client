@@ -15,7 +15,8 @@ export default function Home() {
     }, [count])
 
     return (
-        <Layout title="Home page">
+        <>
+        <Layout title="Home page" />
             <div className="text-3xl">Home page</div>
             <h1 className="text-2xl mt-[3rem]">{count}</h1>
             <button className="
@@ -30,6 +31,6 @@ export default function Home() {
             onClick={() => {setCount(count + 1)}}
             >count</button>
             <Link href={"/registration"} className="text-blue-400">registration</Link>
-        </Layout>
+        </>
     )
 }

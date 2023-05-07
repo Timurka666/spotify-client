@@ -4,10 +4,10 @@ import Head from "next/head";
 import { HTMLAttributes } from "react";
 import ModalWindow from "./modalWindows";
 import NavBar from "./navbar";
+import AudioPlayer from "./player/audioPlayer";
 
 export interface props {
     title: string,
-    children: any
 }
 
 export default function Layout(props: props) {
@@ -21,19 +21,6 @@ export default function Layout(props: props) {
                 <meta name="keywords" content="music,spotify,free" />
                 <title>{props.title}</title>
             </Head>
-                <ModalWindow />
-                <NavBar />
-                <main className="
-                mt-[4.2rem]
-                py-[1rem]
-                px-[0.5rem]
-                bg-neutral-900
-                container
-                mx-auto
-                min-h-[calc(100vh-4.2rem)]
-                ">
-                    {props.children}
-                </main>
         </>
     )
 }

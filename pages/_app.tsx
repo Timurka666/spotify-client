@@ -5,6 +5,7 @@ import {Provider} from 'react-redux';
 import { wrapper } from '@/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import persistStore from 'redux-persist/lib/persistStore';
+import MainLayout from '@/components/mainLayout';
 
 export default function MyApp({ Component, ...rest }: AppProps) {
   const {store, props} = wrapper.useWrappedStore(rest);
@@ -15,7 +16,9 @@ export default function MyApp({ Component, ...rest }: AppProps) {
       <PersistGate persistor={persistStore(store)} loading={null}>
         <>
           <NextNProgress color='#84cc16' options={{showSpinner: false}}  />
-          <Component {...pageProps} />
+          <MainLayout>
+            <Component {...pageProps} />
+          </MainLayout>
         </>
       </PersistGate>
     </Provider>

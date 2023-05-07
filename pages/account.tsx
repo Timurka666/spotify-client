@@ -14,7 +14,8 @@ export default function Account(props: InferGetServerSidePropsType<typeof getSer
     const {id, nickName, email} = useTypedSelector((state) => state.user);
 
     return (
-        <Layout title="My account">
+        <>
+        <Layout title="My account" />
             <div className="
             w-[60%]
             px-[1rem]
@@ -88,7 +89,7 @@ export default function Account(props: InferGetServerSidePropsType<typeof getSer
                     ))}
                 </div>
             </div>
-        </Layout>
+        </>
     )
 }
 
