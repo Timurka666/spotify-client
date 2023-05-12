@@ -5,34 +5,26 @@ interface props {
     onChange: ChangeEventHandler<HTMLInputElement>
 }
 
-export default function TrackProgress(props: props) {
-    const {length, currentTime} = useTypedSelector(state => state.player);
+export default function VolumeProgress(props: props) {
+    const {volume} = useTypedSelector(state => state.player);
+    const width = '5rem';
+    const height = '0.5rem';
     return (
         <>
-        <div className="flex gap-[1rem]">
         <input
-        className={`w-[20rem]`}
+        className={`w-[${width}]`}
         type="range"
         min={0}
-        max={length}
-        value={currentTime}
+        max={100}
+        value={volume}
         onChange={props.onChange}
         />
-        <div
-        className="
-        text-xl
-        text-neutral-400
-        font-bold
-        ">
-            {`${currentTime} / ${length}`}
-        </div>
-        </div>
         <style jsx>{`
             input[type='range'] {
                 overflow: hidden;
                 -webkit-appearance: none;
                 background-color: #737373;
-                height: 0.5rem;
+                height: ${height};
                 cursor: pointer;
             }
             
@@ -46,7 +38,7 @@ export default function TrackProgress(props: props) {
                 height: 10px;
                 -webkit-appearance: none;
                 background: #434343;
-                box-shadow: -20rem 0 0 20rem #a3e635;
+                box-shadow: -5rem 0 0 5rem #a3e635;
             }
             
             input[type="range"]::-moz-range-progress {

@@ -1,21 +1,69 @@
+/* eslint-disable @next/next/no-img-element */
 
-import { useTypedSelector } from "@/store";
+import { useActions, useTypedSelector } from "@/store";
 import Image  from "next/image";
+import { useEffect, useState } from "react";
 import TrackProgress from "./trackProgress";
+import VolumeProgress from "./volumeProgress";
 
+let audio: HTMLAudioElement;
 
 export default function AudioPlayer() {
     const {currentAlbum, currentTime, currentTrack, isPlayed, isShown, volume} = useTypedSelector(state => state.player);
-    const audio = new Audio();
-    audio.src = `${process.env.baseUrl}/${currentTrack?.filePath}`;
+    const {setLength, setCurrentTime, playTrack, pauseTrack, setVolume, switchToNext, switchToPrev} = useActions();
+    const [coverPath, setPath] = useState('');
+
+    const changeTime = (e: React.ChangeEvent<HTMLInputElement>) => {
+            audio.currentTime = Number(e.target.value);
+            setCurrentTime(Number(e.target.value));
+    }
+
+    const changeVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
+        audio.volume = Number(e.target.value) / 100;
+        setVolume(Number(e.target.value));
+}
+
+    const setAudio = () => {
+        if (currentTrack && isPlayed) {
+            audio.src = `${process.env.baseUrl}/${currentTrack?.filePath}`;
+            audio.volume = volume / 100;
+            audio.onloadedmetadata = () => {
+                setLength(Math.ceil(audio.duration))
+            }
+            audio.ontimeupdate = () => {
+                setCurrentTime(Math.ceil(audio.currentTime))
+            }
+            setPath(`${process.env.baseUrl}/${currentTrack?.coverPath}`);
+            audio.onended = () => {switchToNext()}
+        }
+    }
+
+    const play = () => {
+            audio.play();
+            playTrack();
+    }
+    const pause = () => {
+        audio.pause();
+        pauseTrack();
+}
+
+    useEffect(() => {
+        if (!audio) {
+            audio = new Audio();
+        } else {
+            setAudio();
+            play();
+        }
+    }, [currentTrack]);
+
     return (
         <div
         className="
         fixed
-        top-[calc(100vh-3.5rem)]
+        top-[calc(100vh-4.5rem)]
         left-[0px]
         w-[100vw]
-        h-[3.5rem]
+        h-[4.5rem]
         bg-neutral-900
         border-t-solid
         border-t-[1px]
@@ -32,12 +80,40 @@ export default function AudioPlayer() {
                 <div className="
                 flex
                 justify-between
-                w-[100%]
                 ">
-                    <Image src="/icons/backwardButton.svg" alt="" width="32" height="32" />
-                    <Image src="/icons/playButton.svg" alt="" width="32" height="32" />
-                    <Image src="/icons/forwardButton.svg" alt="" width="32" height="32" />
-                    <TrackProgress />
+                    <div className="
+                    flex
+                    gap-[0.2rem]
+                    ">
+                        <img
+                        src={coverPath}
+                        alt="cover"
+                        className="
+                        object-cover
+                        rounded-[0.3rem]
+                        w-[4rem]
+                        h-[4rem]
+                        "
+                        />
+                        <div className="
+                        text-3xl
+                        text-neutral-400
+                        ">
+                            {currentTrack?.name}
+                        </div>
+                    </div>
+                    <Image onClick={() => {switchToPrev()}} src="/icons/backwardButton.svg" alt="" width="32" height="32" />
+                    {isPlayed ? 
+                    <Image onClick={pause} src="/icons/pauseButton.svg" alt="" width="32" height="32" /> :
+                    <Image onClick={play} src="/icons/playButton.svg" alt="" width="32" height="32" />
+                    }
+                    <Image onClick={() => {switchToNext()}} src="/icons/forwardButton.svg" alt="" width="32" height="32" />
+                    <TrackProgress
+                    onChange={changeTime}
+                    />
+                    <VolumeProgress
+                    onChange={changeVolume}
+                    />
                 </div>
             </div>
         </div>

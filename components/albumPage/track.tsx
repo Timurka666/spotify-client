@@ -26,7 +26,7 @@ export default function TrackComponent(props: props) {
             <div className="
             flex
             flex-col
-            justify-between
+            justify-start
             ">
                 <div
                 className="
@@ -42,7 +42,6 @@ export default function TrackComponent(props: props) {
                 text-neutral-500
                 "
                 >likes: {props.likes}</div>
-                <audio controls src={`${process.env.baseUrl}/${props.filePath}`}></audio>
             </div>
         </div>
     )

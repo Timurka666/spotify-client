@@ -23,9 +23,15 @@ export default function Album(props: InferGetServerSidePropsType<typeof getServe
                 publisher={props.album.data?.publisher}
                 name={props.album.data?.name}
                 cover={props.album.data?.coverPath}
-                author={props.album.data?.author} />
+                author={props.album.data?.author}
+                album={props.album.data} />
             </div>
-            <div>
+            <div className="
+            mt-[2rem]
+            flex
+            flex-col
+            gap-[2rem]
+            ">
                 {props.album.data?.tracks?.map((el, i) => (
                     <TrackComponent
                     key={i}

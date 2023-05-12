@@ -13,7 +13,8 @@ export default function MainLayout(props: props) {
         <NavBar />
         <main className="
         mt-[4.2rem]
-        py-[1rem]
+        pt-[1rem]
+        pb-[5rem]
         px-[0.5rem]
         bg-neutral-900
         container
