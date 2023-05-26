@@ -2,13 +2,14 @@ import { Action, bindActionCreators, combineReducers, configureStore, ThunkActio
 import { createWrapper } from "next-redux-wrapper";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import storage from "./syncStorage";
 import { musicApi } from "./api";
 import { JwtSlice } from "./jwt.slice";
 import { WindowSlice } from "./modalWindow.slice";
 import { UserSlice } from "./user.slice";
 import { MyAlbumsSlice } from "./album.slice";
 import { PlayerSlice } from "./player.slice";
+import { PersistConfig } from "redux-persist/lib/types";
 
 
 
@@ -34,13 +35,13 @@ export const makeStore = () => {
     return makeConfiguredStore(); 
     } else {
         const persistConfig = {
-            key: "musicPaltform",
-            whitelist: ["user", "myAlbums"],
+            key: "musicPlatform",
+            whitelist: ["user", "myAlbums", "player"],
             blacklist: [musicApi.reducerPath],
             storage,
         };
         const persistedReducer = persistReducer(persistConfig, rootReducer);
-        let store = configureStore({
+        const store = configureStore({
         reducer: persistedReducer,
         devTools: process.env.NODE_ENV !== "production",
 
@@ -49,11 +50,9 @@ export const makeStore = () => {
         },}).concat(musicApi.middleware)
         });
         
-        return store;
+        return store; 
     }
 };
-//export const persistor = persistStore(makeStore());
-
 export type AppStore = ReturnType<typeof makeStore>;
 export type AppState = ReturnType<AppStore["getState"]>;
 export type AppThunk<ReturnType = void> = ThunkAction<

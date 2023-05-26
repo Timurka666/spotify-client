@@ -10,14 +10,16 @@ export default function TrackProgress(props: props) {
     return (
         <>
         <div className="flex gap-[1rem]">
-        <input
-        className={`w-[20rem]`}
-        type="range"
-        min={0}
-        max={length}
-        value={currentTime}
-        onChange={props.onChange}
-        />
+            <div className="flex flex-col justify-around">
+                <input
+                className="w-[20rem]"
+                type="range"
+                min={0}
+                max={length}
+                value={currentTime}
+                onChange={props.onChange}
+                />
+            </div>
         <div
         className="
         text-xl

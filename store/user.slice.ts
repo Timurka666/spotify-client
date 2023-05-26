@@ -29,6 +29,6 @@ export const UserSlice = createSlice({
                 ...state,
                 ...action.payload.user
             }
-        }
+        },
     }*/
 });

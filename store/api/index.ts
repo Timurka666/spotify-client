@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getCookie } from "cookies-next";
 import { HYDRATE } from "next-redux-wrapper";
 import { AppState, AppStore } from "..";
-import { IAlbumRes, IAlbum, IGetMe, ILogReq, ILogRes, IRegReq, IRegRes, IUploadAlbumRes, ITrack } from "./interfaces";
+import { IAlbumRes, IAlbum, IGetMe, ILogReq, ILogRes, IRegReq, IRegRes, IUploadAlbumRes, ITrack, IDeleteTrackRes } from "./interfaces";
 
 export const musicApi = createApi({
     reducerPath: 'music/api',
@@ -72,6 +72,15 @@ export const musicApi = createApi({
                     },
                     body
                 })
+            }),
+            deleteTrack: build.mutation<IDeleteTrackRes, number>({
+                query: (id) => ({
+                    method: 'DELETE',
+                    url: `/track/deleteTrack/${id}`,
+                    headers: {
+                        Authorization: getCookie('jwt') as string
+                    },
+                })
             })
         }
     }
@@ -81,5 +90,6 @@ export const {
     useRegisterUserMutation,
     useLoginUserMutation,
     useUploadAlbumMutation,
-    useAddNewTrackMutation
+    useAddNewTrackMutation,
+    useDeleteTrackMutation
 } = musicApi;

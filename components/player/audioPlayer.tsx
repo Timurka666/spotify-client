@@ -10,8 +10,9 @@ let audio: HTMLAudioElement;
 
 export default function AudioPlayer() {
     const {currentAlbum, currentTime, currentTrack, isPlayed, isShown, volume} = useTypedSelector(state => state.player);
-    const {setLength, setCurrentTime, playTrack, pauseTrack, setVolume, switchToNext, switchToPrev} = useActions();
+    const {closePlayer, setLength, setCurrentTime, playTrack, pauseTrack, setVolume, switchToNext, switchToPrev} = useActions();
     const [coverPath, setPath] = useState('');
+    const [position, setPosition] = useState('100vh');
 
     const changeTime = (e: React.ChangeEvent<HTMLInputElement>) => {
             audio.currentTime = Number(e.target.value);
@@ -56,11 +57,18 @@ export default function AudioPlayer() {
         }
     }, [currentTrack]);
 
+    useEffect(() => {
+        if (isShown) {
+            setPosition('calc(100vh - 4.5rem)');
+        } else {
+            setPosition('100vh')
+        }
+    }, [isShown])
+
     return (
         <div
         className="
         fixed
-        top-[calc(100vh-4.5rem)]
         left-[0px]
         w-[100vw]
         h-[4.5rem]
@@ -71,8 +79,9 @@ export default function AudioPlayer() {
         flex
         flex-col
         justify-around
+        transition-all
         "
-        style={{}}>
+        style={{top: `${position}`}}>
             <div className="
             mx-auto
             container
@@ -102,17 +111,71 @@ export default function AudioPlayer() {
                             {currentTrack?.name}
                         </div>
                     </div>
-                    <Image onClick={() => {switchToPrev()}} src="/icons/backwardButton.svg" alt="" width="32" height="32" />
-                    {isPlayed ? 
-                    <Image onClick={pause} src="/icons/pauseButton.svg" alt="" width="32" height="32" /> :
-                    <Image onClick={play} src="/icons/playButton.svg" alt="" width="32" height="32" />
-                    }
-                    <Image onClick={() => {switchToNext()}} src="/icons/forwardButton.svg" alt="" width="32" height="32" />
-                    <TrackProgress
-                    onChange={changeTime}
+                    <Image
+                    className="
+                    hover:cursor-pointer
+                    "
+                    onClick={() => {switchToPrev()}}
+                    src="/icons/backwardButton.svg"
+                    alt=""
+                    width="32"
+                    height="32"
                     />
-                    <VolumeProgress
-                    onChange={changeVolume}
+                    {isPlayed ? 
+                    <Image
+                    className="
+                    hover:cursor-pointer
+                    "
+                    onClick={pause}
+                    src="/icons/pauseButton.svg"
+                    alt=""
+                    width="32"
+                    height="32"
+                    /> :
+                    <Image
+                    className="
+                    hover:cursor-pointer
+                    "
+                    onClick={play}
+                    src="/icons/playButton.svg"
+                    alt=""
+                    width="32"
+                    height="32"
+                    />
+                    }
+                    <Image
+                    className="
+                    hover:cursor-pointer
+                    "
+                    onClick={() => {switchToNext()}}
+                    src="/icons/forwardButton.svg"
+                    alt=""
+                    width="32"
+                    height="32"
+                    />
+                    <div className="
+                    mt-[1rem]
+                    ">
+                        <TrackProgress
+                        onChange={changeTime}
+                        />
+                    </div>
+                    <div className="
+                    mt-[1rem]
+                    ">
+                        <VolumeProgress
+                        onChange={changeVolume}
+                        />
+                    </div>
+                    <Image
+                    className="
+                    hover:cursor-pointer
+                    "
+                    onClick={() => {closePlayer(); pause(); audio = new Audio()}}
+                    src="/icons/cross.svg"
+                    alt=""
+                    width="32"
+                    height="32"
                     />
                 </div>
             </div>

@@ -1,8 +1,10 @@
 import { useActions } from "@/store";
 import { useLoginUserMutation } from "@/store/api";
 import { useEffect, useState } from "react"
+import {useRouter} from 'next/navigation';
 
 export default function LoginForm() {
+    const {push} = useRouter();
     const [logUser, {data: userData, isSuccess}] = useLoginUserMutation();
     const {pushJwt, pushUser} = useActions();
     const [email, setEmail] = useState('');
@@ -24,6 +26,7 @@ export default function LoginForm() {
                 nickName: userData?.user.nickName
             })
             pushJwt(userData?.token);
+            push('/account');
         }
     }, [isSuccess])
 

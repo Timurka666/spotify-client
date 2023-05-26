@@ -64,3 +64,8 @@ export interface ITrack {
   likes: number,
   comments: unknown[]
 }
+
+export interface IDeleteTrackRes {
+  track: ITrack,
+  message: string
+}

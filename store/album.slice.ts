@@ -21,7 +21,7 @@ export const MyAlbumsSlice = createSlice({
     initialState,
     reducers: {
         pushAlbum: (state, action: PayloadAction<IAlbum>) => {
-            state.myAlbums.push(cloneDeep(action.payload))
+            state.myAlbums.push(cloneDeep(action.payload));
         },
         pushTrack: (state, action: PayloadAction<{track: ITrack, albumId: number}>) => {
             const {track, albumId} = action.payload;

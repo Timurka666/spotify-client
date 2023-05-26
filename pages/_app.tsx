@@ -10,16 +10,15 @@ import MainLayout from '@/components/mainLayout';
 export default function MyApp({ Component, ...rest }: AppProps) {
   const {store, props} = wrapper.useWrappedStore(rest);
   const {pageProps} = props;
+  //const persistor = persistStore(store);
 
   return (
     <Provider store={store}>
       <PersistGate persistor={persistStore(store)} loading={null}>
-        <>
           <NextNProgress color='#84cc16' options={{showSpinner: false}}  />
           <MainLayout>
             <Component {...pageProps} />
           </MainLayout>
-        </>
       </PersistGate>
     </Provider>
   )

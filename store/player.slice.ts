@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { cloneDeep } from "lodash";
+import { HYDRATE } from "next-redux-wrapper";
 import { IAlbum, ITrack } from "./api/interfaces";
 
 interface IPlayer {
@@ -29,6 +30,13 @@ export const PlayerSlice = createSlice({
         playAlbum: (state, action: PayloadAction<IAlbum>) => {
             state.currentAlbum = cloneDeep(action.payload);
             state.currentTrack = cloneDeep(state.currentAlbum.tracks[0]);
+        },
+        closePlayer: (state) => {
+            state.currentAlbum = null;
+            state.currentTrack = null;
+            state.isShown = false;
+            state.isPlayed = false;
+
         },
         setLength: (state, action: PayloadAction<number>) => {
             state.length = cloneDeep(action.payload);
@@ -79,5 +87,13 @@ export const PlayerSlice = createSlice({
                 state.currentTrack = cloneDeep(newTrack);
             }
         }
-    }
+    },
+    /*extraReducers: {
+        [HYDRATE]: (state, action) => {
+            return {
+                ...state,
+                ...action.payload.player
+            }
+        }
+    }*/
 });
