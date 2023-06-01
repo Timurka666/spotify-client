@@ -10,6 +10,7 @@ import { UserSlice } from "./user.slice";
 import { MyAlbumsSlice } from "./album.slice";
 import { PlayerSlice } from "./player.slice";
 import { PersistConfig } from "redux-persist/lib/types";
+import { currentAlbumSlice } from "./currentlyWatchedAlbum.slice";
 
 
 
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
     [JwtSlice.name]: JwtSlice.reducer,
     [WindowSlice.name]: WindowSlice.reducer,
     [MyAlbumsSlice.name]: MyAlbumsSlice.reducer,
-    [PlayerSlice.name]: PlayerSlice.reducer
+    [PlayerSlice.name]: PlayerSlice.reducer,
+    [currentAlbumSlice.name]: currentAlbumSlice.reducer,
 })
 
 const makeConfiguredStore = () =>
@@ -37,7 +39,7 @@ export const makeStore = () => {
         const persistConfig = {
             key: "musicPlatform",
             whitelist: ["user", "myAlbums", "player"],
-            blacklist: [musicApi.reducerPath],
+            blacklist: [musicApi.reducerPath, "watchedAlbum"],
             storage,
         };
         const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -67,7 +69,8 @@ export const actions = {
     ...JwtSlice.actions,
     ...WindowSlice.actions,
     ...MyAlbumsSlice.actions,
-    ...PlayerSlice.actions
+    ...PlayerSlice.actions,
+    ...currentAlbumSlice.actions,
 }
 
 export const useActions = () => {
