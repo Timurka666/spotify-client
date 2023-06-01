@@ -1,3 +1,10 @@
+import { useActions, useTypedSelector } from "@/store"
+import { useDeleteTrackMutation } from "@/store/api";
+import { WindowType } from "@/store/modalWindow.slice";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+
 /* eslint-disable @next/next/no-img-element */
 interface props {
     id: number,
@@ -8,6 +15,20 @@ interface props {
 }
 
 export default function TrackComponent(props: props) {
+    const {tracks} = useTypedSelector((state) => state.myAlbums);
+    const {closePlayer, deleteTrack: delTrack, callWindow, removeTrack} = useActions();
+    const isMyTrack = tracks.filter((el) => el.id === props.id)[0];
+    const [deleteTrack, {data, isSuccess}] = useDeleteTrackMutation();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (isSuccess && data) {
+            closePlayer();
+            delTrack(props.id);
+            removeTrack(props.id);
+            callWindow({message: data?.message, type: WindowType.NOTIF});
+        }
+    }, [isSuccess]);
     return (
         <div className="
         flex
@@ -27,6 +48,7 @@ export default function TrackComponent(props: props) {
             flex
             flex-col
             justify-start
+            gap-[0.3rem]
             ">
                 <div
                 className="
@@ -42,6 +64,20 @@ export default function TrackComponent(props: props) {
                 text-neutral-500
                 "
                 >likes: {props.likes}</div>
+                {
+                    isMyTrack
+                    &&
+                    <Image
+                    src="/icons/trashBin.svg"
+                    alt=""
+                    width="48"
+                    height="48"
+                    className="
+                    hover:cursor-pointer
+                    "
+                    onClick={() => {deleteTrack(props.id)}}
+                    />
+                }
             </div>
         </div>
     )

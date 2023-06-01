@@ -108,6 +108,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
         store.dispatch(UserSlice.actions.pushUser({id: user.data?.id, nickName: user.data?.nickName, email: user.data?.email}));
         user.data?.albums.forEach((el) => {
             store.dispatch(MyAlbumsSlice.actions.pushAlbum(el));
+            el.tracks.forEach((e) => {
+                store.dispatch(MyAlbumsSlice.actions.pushTrack({track: e, albumId: el.id}))
+            })
         })
         await Promise.all(store.dispatch(musicApi.util.getRunningQueriesThunk()));
 

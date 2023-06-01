@@ -1,3 +1,4 @@
+import FileUpload, { FileType } from "../fileUpload"
 import SelectFileButton from "../selectFile"
 
 interface props {
@@ -35,70 +36,34 @@ export default function TrackForm(props: props) {
             px-[0.5rem]
             "
             />
-
-            <input
-            id="input-track"
-            type="file"
-            accept="audio/*"
-            className="hidden"
-            onChange={(e) => {props.setTrack(e.target.files[0])}}
-            />
-            <div className="
-            flex
-            justify-start
-            w-[30rem]
-            bg-white/0
-            h-[2.3rem]
-            border-solid
-            border-[2px]
-            rounded-[10px]
-            border-neutral-600
-            gap-[2rem]
-            ">
-                <label
-                className="
-                "
-                htmlFor="input-track"
-                ><SelectFileButton /></label>
-                <div
-                className="
-                text-neutral-300
-                text-2xl
-                ">
-                    {props.track?.name || 'no file selected'}
+            <div className="flex justify-around">
+                <div>
+                    <div
+                    className="
+                    text-neutral-300
+                    text-xl
+                    "
+                    >New track</div>
+                    <FileUpload
+                    id={5}
+                    setFile={props.setTrack}
+                    type={FileType.AUDIO}
+                    file={props.track}
+                    />  
                 </div>
-            </div>
-                
-            <input
-            id="input-cover"
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={(e) => {props.setCover(e.target.files[0])}}
-            />
-            <div className="
-            flex
-            justify-start
-            w-[30rem]
-            bg-white/0
-            h-[2.3rem]
-            border-solid
-            border-[2px]
-            rounded-[10px]
-            border-neutral-600
-            gap-[2rem]
-            ">
-                <label
-                className="
-                "
-                htmlFor="input-cover"
-                ><SelectFileButton /></label>
-                <div
-                className="
-                text-neutral-300
-                text-2xl
-                ">
-                    {props.cover?.name || 'no file selected'}
+                <div>
+                    <div
+                    className="
+                    text-neutral-300
+                    text-xl
+                    "
+                    >Cover</div>
+                    <FileUpload
+                    id={6}
+                    setFile={props.setCover}
+                    type={FileType.IMG}
+                    file={props.cover}
+                    />
                 </div>
             </div>
 

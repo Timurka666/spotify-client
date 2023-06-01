@@ -1,3 +1,4 @@
+import FileUpload, { FileType } from "../fileUpload"
 import SelectFileButton from "../selectFile"
 
 interface props {
@@ -53,42 +54,20 @@ export default function AlbumForm(props: props) {
             px-[0.5rem]
             "
             onChange={(e) => {props.setAuthor(e.target.value)}}
-             />
-
-            <div
-            className="
-            flex
-            justify-start
-            w-[30rem]
-            bg-white/0
-            h-[2.3rem]
-            border-solid
-            border-[2px]
-            rounded-[10px]
-            border-neutral-600
-            gap-[2rem]
-            "
-            >
-            <input
-            id="input-cover"
-            type="file"
-            name="cover"
-            accept="image/*"
-            className="hidden"
-            onChange={(e) => {props.setFile(e.target.files[0])}}
-             />
-            <label
-            className="
-            "
-            htmlFor="input-cover"
-            ><SelectFileButton /></label>
-            <div
-            className="
-            text-neutral-300
-            text-2xl
-            ">
-                {props.file?.name || 'no file selected'}
-            </div>
+            />
+            <div>
+                <div
+                className="
+                text-neutral-300
+                text-xl
+                "
+                >Album cover</div>
+                <FileUpload
+                id={'input-cover'}
+                file={props.file as File}
+                setFile={props.setFile}
+                type={FileType.IMG}
+                />
             </div>
         </div>
     )

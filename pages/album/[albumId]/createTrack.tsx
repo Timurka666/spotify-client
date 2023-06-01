@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 export default function CreateTrack() {
     const router = useRouter();
-    const {callWindow} = useActions();
+    const {callWindow, pushAlbum, pushTrack} = useActions();
     const [create, {isSuccess, data}] = useAddNewTrackMutation();
     const [name, setName] = useState('');
     const [cover, setCover] = useState<File>();
@@ -27,8 +27,9 @@ export default function CreateTrack() {
         await create(form);
     }
     useEffect(() => {
-        if (isSuccess) {
+        if (isSuccess && data) {
             callWindow({message: 'A new track has been created', type: WindowType.NOTIF});
+            pushTrack({track: data, albumId: Number(router.query.albumId)})
             router.push(`/album/${router.query.albumId}`);
         }
     }, [isSuccess]);
