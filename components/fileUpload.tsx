@@ -18,7 +18,7 @@ interface props {
 export default function FileUpload(props: props) {
     const {callWindow} = useActions();
 
-    const inputRef = useRef<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>>();
+    const inputRef = useRef<any>();
     const [dragActive, setActive] = useState(false);
 
     const handleFile = (e: ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +53,7 @@ export default function FileUpload(props: props) {
         <>
             <input
             ref={inputRef}
-            id={props.id}
+            id={props.id as string}
             type="file"
             accept={props.type}
             className="hidden"
@@ -77,7 +77,7 @@ export default function FileUpload(props: props) {
                 '#d4d4d4' :
                 '#525252'
             }`}}
-            htmlFor={props.id}
+            htmlFor={props.id as string}
             onClick={(e) => {e.preventDefault()}}
             onDragEnter={handleDrag}
             onDragLeave={handleDrag}

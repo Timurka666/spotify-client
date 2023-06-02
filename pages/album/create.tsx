@@ -1,5 +1,4 @@
 import Layout from "@/components/layout";
-import SelectFileButton from "@/components/selectFile";
 import { useActions } from "@/store";
 import { useUploadAlbumMutation } from "@/store/api";
 import { WindowType } from "@/store/modalWindow.slice";

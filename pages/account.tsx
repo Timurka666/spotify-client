@@ -105,7 +105,10 @@ export const getServerSideProps = wrapper.getServerSideProps(
     (store) => async (context) => {
         const jwt = getCookie('jwt', {req: context.req, res: context.res}) as string;
         const user = await store.dispatch(musicApi.endpoints.getMe.initiate(jwt));
-        store.dispatch(UserSlice.actions.pushUser({id: user.data?.id, nickName: user.data?.nickName, email: user.data?.email}));
+        if (user.data) {
+
+            store.dispatch(UserSlice.actions.pushUser({id: user.data?.id, nickName: user.data?.nickName, email: user.data?.email}));
+        }
         user.data?.albums.forEach((el) => {
             store.dispatch(MyAlbumsSlice.actions.pushAlbum(el));
             el.tracks.forEach((e) => {

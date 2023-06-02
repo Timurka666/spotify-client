@@ -1,5 +1,5 @@
 import FileUpload, { FileType } from "../fileUpload"
-import SelectFileButton from "../selectFile"
+
 
 interface props {
     name: string,

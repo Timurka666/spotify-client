@@ -1,14 +1,15 @@
 import AlbumComponent from "@/components/albumPage/album";
 import TrackComponent from "@/components/albumPage/track";
 import Layout from "@/components/layout";
-import { useTypedSelector, wrapper } from "@/store";
-import { musicApi } from "@/store/api";
+import { useActions, useTypedSelector, wrapper } from "@/store";
+import { musicApi, useGetAlbumQuery } from "@/store/api";
 import { IAlbumRes } from "@/store/api/interfaces";
 import { currentAlbumSlice } from "@/store/currentlyWatchedAlbum.slice";
 import { useRouter } from "next/router";
 import { InferGetServerSidePropsType } from "next/types";
 
-export default function Album() {
+export default function Album(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
+
     const {id, author, coverPath, name, publisher, tracks} = useTypedSelector(state => state.watchedAlbum);
     return (
         <>
@@ -51,10 +52,11 @@ export default function Album() {
 
 export const getServerSideProps = wrapper.getServerSideProps(
     (store) => async (context) => {
-        const {albumId} = context.params;
+        const {albumId}: any = context.params;
         const album = await store.dispatch(musicApi.endpoints.getAlbum.initiate(albumId));
         store.dispatch(currentAlbumSlice.actions.pushAlbum(album.data as IAlbumRes));
         await Promise.all(store.dispatch(musicApi.util.getRunningQueriesThunk()));
-
+        
+        return {props: {}}
     }
 );

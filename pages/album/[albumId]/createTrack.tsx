@@ -38,9 +38,9 @@ export default function CreateTrack() {
         <>
         <Layout title="create new track" />
            <TrackForm
-           cover={cover}
+           cover={cover as File}
            setCover={setCover}
-           track={track}
+           track={track as File}
            setTrack={setTrack}
            name={name}
            setName={setName}

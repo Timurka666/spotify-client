@@ -91,5 +91,6 @@ export const {
     useLoginUserMutation,
     useUploadAlbumMutation,
     useAddNewTrackMutation,
-    useDeleteTrackMutation
+    useDeleteTrackMutation,
+    useGetAlbumQuery
 } = musicApi;
