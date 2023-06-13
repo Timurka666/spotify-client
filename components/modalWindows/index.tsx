@@ -46,7 +46,7 @@ export default function ModalWindow() {
         transition-opacity
         duration-700
         "
-        style={{display: `${display}`, position: "fixed", opacity: `${opacity}`}}
+        style={{display: `${display}`, position: "fixed"}}
         >{window}</div>
     )
 }
