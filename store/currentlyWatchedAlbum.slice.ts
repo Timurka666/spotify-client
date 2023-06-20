@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { cloneDeep } from "lodash";
-import { HYDRATE } from "next-redux-wrapper";
 import { IAlbumRes } from "./api/interfaces";
 
 const initialState: IAlbumRes = {
@@ -16,7 +15,7 @@ export const currentAlbumSlice = createSlice({
     name: 'watchedAlbum',
     initialState,
     reducers: {
-        pushAlbum: (state, action: PayloadAction<IAlbumRes>) => {
+        pushWatchedAlbum: (state, action: PayloadAction<IAlbumRes>) => {
             state.id = action.payload.id;
             state.author = action.payload.author;
             state.coverPath = action.payload.coverPath;
@@ -29,12 +28,4 @@ export const currentAlbumSlice = createSlice({
             state.tracks = cloneDeep(newTracks);
         }
     },
-    extraReducers: {
-        [HYDRATE]: (state, action) => {
-            return {
-                ...state,
-                ...action.payload.watchedAlbum
-            }
-        },
-    }
 })

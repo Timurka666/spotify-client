@@ -13,6 +13,7 @@
     "@types/node": "18.15.11",
     "@types/react": "18.0.33",
     "@types/react-dom": "18.0.11",
+    "axios": "^1.4.0",
     "cookies-next": "^2.1.1",
     "eslint": "8.37.0",
     "eslint-config-next": "13.2.4",
@@ -26,6 +27,7 @@
     "typescript": "5.0.3"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/lodash": "^4.14.194",
     "autoprefixer": "^10.4.14",
     "cross-env": "^7.0.3",
