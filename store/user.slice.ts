@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { HYDRATE } from "next-redux-wrapper";
 
 interface userState {
     id: number,
@@ -23,12 +22,4 @@ export const UserSlice = createSlice({
             state.nickName = action.payload.nickName;
         }
     },
-    /*extraReducers: {
-        [HYDRATE]: (state, action) => {
-            return {
-                ...state,
-                ...action.payload.user
-            }
-        },
-    }*/
 });

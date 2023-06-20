@@ -1,5 +1,4 @@
 import { Action, bindActionCreators, combineReducers, configureStore, ThunkAction } from "@reduxjs/toolkit";
-import { createWrapper } from "next-redux-wrapper";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from "redux-persist";
 import storage from "./syncStorage";
@@ -9,7 +8,6 @@ import { WindowSlice } from "./modalWindow.slice";
 import { UserSlice } from "./user.slice";
 import { MyAlbumsSlice } from "./album.slice";
 import { PlayerSlice } from "./player.slice";
-import { PersistConfig } from "redux-persist/lib/types";
 import { currentAlbumSlice } from "./currentlyWatchedAlbum.slice";
 
 
@@ -24,42 +22,25 @@ const rootReducer = combineReducers({
     [currentAlbumSlice.name]: currentAlbumSlice.reducer,
 })
 
-const makeConfiguredStore = () =>
-  configureStore({
-    reducer: rootReducer,
-    devTools: true,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}).concat(musicApi.middleware)
-  });
-
-export const makeStore = () => {
-    const isServer = typeof window === "undefined";
-    if (isServer) {
-    return makeConfiguredStore(); 
-    } else {
-        const persistConfig = {
-            key: "musicPlatform",
-            whitelist: ["user", "myAlbums", "player"],
-            blacklist: [musicApi.reducerPath, "watchedAlbum"],
-            storage,
-        };
-        const persistedReducer = persistReducer(persistConfig, rootReducer);
-        const store = configureStore({
-        reducer: persistedReducer,
-        devTools: process.env.NODE_ENV !== "production",
-
-        middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: {
-          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-        },}).concat(musicApi.middleware)
-        });
-        
-        return store; 
-    }
+const persistConfig = {
+  key: "musicPlatform",
+  whitelist: ["user", "myAlbums", "player"],
+  blacklist: [musicApi.reducerPath, "watchedAlbum"],
+  storage,
 };
-export type AppStore = ReturnType<typeof makeStore>;
-export type AppState = ReturnType<AppStore["getState"]>;
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = configureStore({
+  reducer: persistedReducer,
+  devTools: process.env.NODE_ENV !== "production",
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}).concat(musicApi.middleware)
+});
+
+export type RootState = ReturnType<typeof store.getState>;
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
-  AppState,
+  RootState,
   unknown,
   Action
 >;
@@ -78,6 +59,4 @@ export const useActions = () => {
 
     return bindActionCreators(actions, dispatch);
 };
-export const useTypedSelector: TypedUseSelectorHook<AppState> = useSelector;
-
-export const wrapper = createWrapper<AppStore>(makeStore);
+export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;

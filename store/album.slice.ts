@@ -1,5 +1,4 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import { HYDRATE } from "next-redux-wrapper";
 import {IAlbum, ITrack} from "./api/interfaces"
 import {cloneDeep} from 'lodash';
 
@@ -40,12 +39,4 @@ export const MyAlbumsSlice = createSlice({
             state.tracks = cloneDeep(newTracks);
         }
     },
-    /*extraReducers: {
-        [HYDRATE]: (state, action) => {
-            return {
-                ...state,
-                ...action.payload.myAlbums
-            }
-        }
-    }*/
 });
