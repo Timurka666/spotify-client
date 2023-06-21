@@ -1,5 +1,5 @@
-import { Action, bindActionCreators, combineReducers, configureStore, Dispatch, Store, ThunkAction } from "@reduxjs/toolkit";
-import { createWrapper, MakeStore } from "next-redux-wrapper";
+import { Action, bindActionCreators, combineReducers, configureStore, ThunkAction } from "@reduxjs/toolkit";
+import { createWrapper } from "next-redux-wrapper";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { musicApi } from "./api";
 import { JwtSlice } from "./jwt.slice";
@@ -8,7 +8,6 @@ import { UserSlice } from "./user.slice";
 import { MyAlbumsSlice } from "./album.slice";
 import { PlayerSlice } from "./player.slice";
 import { currentAlbumSlice } from "./currentlyWatchedAlbum.slice";
-import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
 
 
 
