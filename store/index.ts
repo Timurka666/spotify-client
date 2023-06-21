@@ -1,5 +1,5 @@
-import { Action, bindActionCreators, combineReducers, configureStore, ThunkAction } from "@reduxjs/toolkit";
-import { createWrapper } from "next-redux-wrapper";
+import { Action, bindActionCreators, combineReducers, configureStore, Dispatch, Store, ThunkAction } from "@reduxjs/toolkit";
+import { createWrapper, MakeStore } from "next-redux-wrapper";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { musicApi } from "./api";
 import { JwtSlice } from "./jwt.slice";
@@ -8,6 +8,7 @@ import { UserSlice } from "./user.slice";
 import { MyAlbumsSlice } from "./album.slice";
 import { PlayerSlice } from "./player.slice";
 import { currentAlbumSlice } from "./currentlyWatchedAlbum.slice";
+import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
 
 
 
@@ -20,40 +21,19 @@ const rootReducer = combineReducers({
     [PlayerSlice.name]: PlayerSlice.reducer,
     [currentAlbumSlice.name]: currentAlbumSlice.reducer,
 })
-
-const makeConfiguredStore = () =>
+//@ts-ignore
+export const makeStore = ({reduxWrapperMiddleware}) =>
   configureStore({
     reducer: rootReducer,
-    devTools: true,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}).concat(musicApi.middleware)
+    devTools: process.env.NODE_ENV !== "production",
+    middleware: (getDefaultMiddleware) => 
+      getDefaultMiddleware({serializableCheck: false}).concat(musicApi.middleware, reduxWrapperMiddleware)
   });
 
-export const makeStore = () => {
-    const isServer = typeof window === "undefined";
-    if (isServer) {
-    return makeConfiguredStore(); 
-    } else {
-        const persistConfig = {
-            key: "musicPlatform",
-            whitelist: ["user", "myAlbums", "player"],
-            blacklist: [musicApi.reducerPath, "watchedAlbum"],
-            storage,
-        };
-        const persistedReducer = persistReducer(persistConfig, rootReducer);
-        const store = configureStore({
-        reducer: persistedReducer,
-        devTools: process.env.NODE_ENV !== "production",
 
-        middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: {
-          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-        },}).concat(musicApi.middleware)
-        });
-        
-        return store; 
-    }
-};
 export type AppStore = ReturnType<typeof makeStore>;
 export type AppState = ReturnType<AppStore["getState"]>;
+export type AppDispatch = AppStore['dispatch'];
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
   AppState,
@@ -71,7 +51,7 @@ export const actions = {
 }
 
 export const useActions = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
 
     return bindActionCreators(actions, dispatch);
 };

@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import AlbumComponent from "@/components/account/album";
 import Layout from "@/components/layout";
-import { makeStore, useTypedSelector, wrapper } from "@/store";
+import { actions, makeStore, useTypedSelector, wrapper } from "@/store";
 import { MyAlbumsSlice } from "@/store/album.slice";
 import { musicApi } from "@/store/api";
 import { UserSlice } from "@/store/user.slice";
@@ -11,7 +11,9 @@ import { InferGetServerSidePropsType } from "next";
 import Link from "next/link";
 
 export default function Account(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
+    wrapper.useHydration(props);
     const {id, nickName, email} = useTypedSelector((state) => state.user);
+    const {myAlbums} = useTypedSelector((state) => state.myAlbums);
 
     return (
         <>
@@ -27,10 +29,10 @@ export default function Account(props: InferGetServerSidePropsType<typeof getSer
                 <div className="
                 text-5xl
                 font-bold
-                text-neutral-500">{props.user.data?.nickName}</div>
+                text-neutral-500">{nickName}</div>
                 <div className="
                 text-2xl
-                text-neutral-500">{props.user.data?.email}</div>
+                text-neutral-500">{email}</div>
             </div>
             <div className="
             mt-[1rem]
@@ -78,7 +80,7 @@ export default function Account(props: InferGetServerSidePropsType<typeof getSer
                 flex-col
                 gap-[1rem]
                 ">
-                    {props.user.data?.albums?.map((el, i) => (
+                    {myAlbums.map((el, i) => (
                         <AlbumComponent
                         albumId={el.id}
                         imagePath={el.coverPath}
@@ -102,23 +104,15 @@ export default function Account(props: InferGetServerSidePropsType<typeof getSer
 }*/
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    (store) => async (context) => {
+    store => async context => {
         const jwt = getCookie('jwt', {req: context.req, res: context.res}) as string;
-        const user = await store.dispatch(musicApi.endpoints.getMe.initiate(jwt));
-        if (user.data) {
 
-            store.dispatch(UserSlice.actions.pushUser({id: user.data?.id, nickName: user.data?.nickName, email: user.data?.email}));
-        }
-        user.data?.albums.forEach((el) => {
-            store.dispatch(MyAlbumsSlice.actions.pushAlbum(el));
-            el.tracks.forEach((e) => {
-                store.dispatch(MyAlbumsSlice.actions.pushTrack({track: e, albumId: el.id}))
-            })
-        })
+        store.dispatch(musicApi.endpoints.getMe.initiate(jwt));
+
         await Promise.all(store.dispatch(musicApi.util.getRunningQueriesThunk()));
 
         return {
-            props: {user}
+            props: {}
         }
     }
 )

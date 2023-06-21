@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import { HYDRATE } from "next-redux-wrapper";
 import {IAlbum, ITrack} from "./api/interfaces"
 import {cloneDeep} from 'lodash';
+import { musicApi } from "./api";
 
 interface Tracks extends ITrack {
     albumId: number
@@ -40,12 +40,19 @@ export const MyAlbumsSlice = createSlice({
             state.tracks = cloneDeep(newTracks);
         }
     },
-    /*extraReducers: {
-        [HYDRATE]: (state, action) => {
-            return {
-                ...state,
-                ...action.payload.myAlbums
+    extraReducers: (builder) => {
+        builder.addMatcher(
+            musicApi.endpoints.getMe.matchFulfilled,
+            (state, action) => {
+                state.myAlbums = [];
+                state.tracks = [];
+                action.payload.albums.forEach((el) => {
+                    state.myAlbums.push(cloneDeep(el));
+                    el.tracks.forEach((e) => {
+                        state.tracks.push(cloneDeep({...e, albumId: el.id}))
+                    })
+                })
             }
-        }
-    }*/
+            )
+    }
 });
