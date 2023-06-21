@@ -1,15 +1,12 @@
 import { Action, bindActionCreators, combineReducers, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { FLUSH, PAUSE, PERSIST, persistReducer, persistStore, PURGE, REGISTER, REHYDRATE } from "redux-persist";
-import storage from "./syncStorage";
 import { musicApi } from "./api";
 import { JwtSlice } from "./jwt.slice";
 import { WindowSlice } from "./modalWindow.slice";
 import { UserSlice } from "./user.slice";
 import { MyAlbumsSlice } from "./album.slice";
 import { PlayerSlice } from "./player.slice";
-import { PersistConfig } from "redux-persist/lib/types";
 import { currentAlbumSlice } from "./currentlyWatchedAlbum.slice";
 
 
