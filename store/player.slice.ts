@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { cloneDeep } from "lodash";
-import { HYDRATE } from "next-redux-wrapper";
 import { IAlbum, ITrack } from "./api/interfaces";
 
 interface IPlayer {
@@ -88,12 +87,4 @@ export const PlayerSlice = createSlice({
             }
         }
     },
-    /*extraReducers: {
-        [HYDRATE]: (state, action) => {
-            return {
-                ...state,
-                ...action.payload.player
-            }
-        }
-    }*/
 });

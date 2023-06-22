@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getCookie } from "cookies-next";
-import { HYDRATE } from "next-redux-wrapper";
 import { AppState, AppStore } from "..";
 import { IAlbumRes, IAlbum, IGetMe, ILogReq, ILogRes, IRegReq, IRegRes, IUploadAlbumRes, ITrack, IDeleteTrackRes } from "./interfaces";
 
@@ -17,11 +16,6 @@ export const musicApi = createApi({
             return headers;
         },
     }),
-    extractRehydrationInfo(action, { reducerPath }) {
-        if (action.type === HYDRATE) {
-          return action.payload[reducerPath]
-        }
-      },
     endpoints(build) {
         return {
             registerUser: build.mutation<IRegRes, IRegReq>({

@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { HYDRATE } from "next-redux-wrapper";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
+import { musicApi } from "./api";
 
 interface userState {
     id: number,
@@ -13,6 +14,7 @@ const initialState: userState = {
     email: '',
 }
 
+
 export const UserSlice = createSlice({
     name: 'user',
     initialState,
@@ -23,12 +25,15 @@ export const UserSlice = createSlice({
             state.nickName = action.payload.nickName;
         }
     },
-    /*extraReducers: {
-        [HYDRATE]: (state, action) => {
-            return {
-                ...state,
-                ...action.payload.user
+    extraReducers: (builder) => {
+        builder.addMatcher(
+            musicApi.endpoints.getMe.matchFulfilled,
+            (state, action) => {
+                const {id, email, nickName} = action.payload;
+                state.id = id;
+                state.email = email;
+                state.nickName = nickName;
             }
-        },
-    }*/
+        )
+    }
 });

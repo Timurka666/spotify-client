@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import { InferGetServerSidePropsType } from "next/types";
 
 export default function Album(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
-
+    wrapper.useHydration(props)
     const {id, author, coverPath, name, publisher, tracks} = useTypedSelector(state => state.watchedAlbum);
     return (
         <>
@@ -53,8 +53,8 @@ export default function Album(props: InferGetServerSidePropsType<typeof getServe
 export const getServerSideProps = wrapper.getServerSideProps(
     (store) => async (context) => {
         const {albumId}: any = context.params;
-        const album = await store.dispatch(musicApi.endpoints.getAlbum.initiate(albumId));
-        store.dispatch(currentAlbumSlice.actions.pushAlbum(album.data as IAlbumRes));
+        store.dispatch(musicApi.endpoints.getAlbum.initiate(albumId));
+
         await Promise.all(store.dispatch(musicApi.util.getRunningQueriesThunk()));
         
         return {props: {}}
