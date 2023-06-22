@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getCookie, setCookie } from "cookies-next";
-import { HYDRATE } from "next-redux-wrapper";
 import { AppState } from ".";
 
 export interface state {
